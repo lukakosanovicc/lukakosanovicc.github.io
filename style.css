@@ -82,7 +82,7 @@ img {
 }
 
 ::selection {
-    background-color: #415D43;
+    background-color: #0D1321;
 }
 
 @media screen and (max-width: 496px) {
@@ -155,6 +155,7 @@ img {
     transform: scale(1.1);
 
 }
+
 
 
 
