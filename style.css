@@ -41,12 +41,12 @@ img {
 
 .info h1 {
     font-size: 1.8em;
-    color: #333;
+    color: #ffffff;
 }
 
 .info p {
     font-size: 1em;
-    color: #666;
+    color: #A1CCA5;
     margin-top: 5px;
 }
 
@@ -155,5 +155,6 @@ img {
     transform: scale(1.1);
 
 }
+
 
 
