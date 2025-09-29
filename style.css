@@ -1,3 +1,12 @@
+:root {
+    --background-color: #111D13;
+    --card-color: #415D43;
+    --text-color: #A1CCA5;
+    --selection-color: #0D1321;
+    --mail-button-color: #0077cc;
+    --projects-button-color: #4CAF50;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,14 +19,14 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #111D13;
+    background-color: var(--background-color);
 }
 
 main {
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 20px;
-    background-color: #415D43;
+    background-color: var(--card-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 500px;
 }
@@ -46,14 +55,14 @@ img {
 
 .info p {
     font-size: 1em;
-    color: #A1CCA5;
+    color: var(--text-color);
     margin-top: 5px;
 }
 
 .links {
     display: flex;
     gap: 15px;
-    justify-content: center; /* Changed from flex-start to center */
+    justify-content: center;
     margin-top: 15px;
 }
 
@@ -66,12 +75,12 @@ img {
 }
 
 .links .mejl {
-    background-color: #0077cc;
+    background-color: var(--mail-button-color);
     color: white;
 }
 
 .links .projekti {
-    background-color: #4CAF50;
+    background-color: var(--projects-button-color);
     color: white;
 }
 
@@ -82,7 +91,7 @@ img {
 }
 
 ::selection {
-    background-color: #0D1321;
+    background-color: var(--selection-color);
 }
 
 @media screen and (max-width: 496px) {
@@ -155,6 +164,7 @@ img {
     transform: scale(1.1);
 
 }
+
 
 
 
