@@ -140,6 +140,9 @@ img {
         padding: 8px;
         font-size: 0.9em;
     }
+    #startGameLink {
+        display: none;
+    }
 }
 
 .language-switcher {
@@ -165,8 +168,16 @@ img {
 
 }
 
-
-
-
-
-
+#startGameLink {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+    background: #000;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: opacity 0.2s ease;
+}
