@@ -140,9 +140,6 @@ img {
         padding: 8px;
         font-size: 0.9em;
     }
-    #startGameLink {
-        display: none;
-    }
 }
 
 .language-switcher {
@@ -180,4 +177,10 @@ img {
     text-decoration: none;
     font-size: 14px;
     transition: opacity 0.2s ease;
+}
+
+@media screen and (max-width: 496px), screen and (max-device-width: 496px), screen and (pointer: coarse) {   /* coarse means touchscreen*/
+    #startGameLink {
+        display: none;
+    }
 }
