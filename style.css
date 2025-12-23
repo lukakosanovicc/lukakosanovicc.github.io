@@ -164,23 +164,3 @@ img {
     transform: scale(1.1);
 
 }
-
-#startGameLink {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 1000;
-    background: #000;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: opacity 0.2s ease;
-}
-
-@media screen and (max-width: 496px), screen and (max-device-width: 496px), screen and (pointer: coarse) {   /* coarse means touchscreen*/
-    #startGameLink {
-        display: none;
-    }
-}
