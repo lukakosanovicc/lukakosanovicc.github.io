@@ -9,147 +9,128 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function startTreasureHunt() {
-    console.clear();
-    alert("Game started! Press F12 and go to the console tab to play.\nIf the UI is too small, hold the control key and scroll to zoom in.");
+  console.clear();
 
-    // MAP SETUP
+  const MAX_GUESSES = 10;
+  const MAX_CLUES = 10;
 
-    let map1 = `
-    
-          1  2  3  4  5  6  7  8  9 10 11 12 13
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+       LEGEND:
-    A   |♣ |♣ |· |· |· |· |· |▲ |▲ |▲ |▲ |· |· |      ♣ -> tree
-    B   |· |· |· |· |· |· |· |· |· |▲ |▲ |▲ |· |      ▲ -> mountain
-    C   |· |∆ |∆ |· |· |· |· |· |· |· |· |· |· |      ∆ -> volcano
-    D   |· |∆ |· |· |○ |○ |· |· |~ |~ |~ |· |· |      ○ -> pond
-    E   |· |· |· |· |○ |○ |· |· |~ |· |~ |~ |~ |      ~ -> river
-    F   |· |· |· |· |○ |· |· |~ |~ |· |· |· |· |      ■ -> rock
-    G   |■ |· |· |· |· |· |· |~ |· |· |· |· |· |
-    H   |■ |■ |■ |· |· |· |· |~ |· |· |· |· |· |
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+
-    
-    `;
+  const map1 = `
+      1  2  3  4  5  6  7  8  9 10 11 12 13
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+
+A   |♣ |♣ |· |· |· |· |· |▲ |▲ |▲ |▲ |· |· |
+B   |· |· |· |· |· |· |· |· |· |▲ |▲ |▲ |· |
+C   |· |∆ |∆ |· |· |· |· |· |· |· |· |· |· |
+D   |· |∆ |· |· |○ |○ |· |· |~ |~ |~ |· |· |
+E   |· |· |· |· |○ |○ |· |· |~ |· |~ |~ |~ |
+F   |· |· |· |· |○ |· |· |~ |~ |· |· |· |· |
+G   |■ |· |· |· |· |· |· |~ |· |· |· |· |· |
+H   |■ |■ |■ |· |· |· |· |~ |· |· |· |· |· |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+
+`;
 
-    let map1_matrix = [
-      ["T", "T", "", "", "", "", "", "A", "A", "A", "A", "", ""],
-      ["", "", "", "", "", "", "", "", "", "A", "A", "A", ""],
-      ["", "V", "V", "", "", "", "", "", "", "", "", "", ""],
-      ["", "V", "", "", "O", "O", "", "", "~", "~", "~", "", ""],
-      ["", "", "", "", "O", "O", "", "", "~", "", "~", "~", "~"],
-      ["", "", "", "", "O", "", "", "~", "~", "", "", "", ""],
-      ["@", "", "", "", "", "", "", "~", "", "", "", "", ""],
-      ["@", "@", "@", "", "", "", "", "~", "", "", "", "", ""]
-    ];
+  const map1Matrix = [
+    ["T","T","","","","","", "A","A","A","A","",""],
+    ["","","","","","","","","","A","A","A",""],
+    ["","V","V","","","","","","","","","",""],
+    ["","V","","","O","O","","","~","~","~","",""],
+    ["","","","","O","O","","","~","","~","~","~"],
+    ["","","","","O","","","~","~","","","",""],
+    ["@","","","","","","","~","","","","",""],
+    ["@","@","@","","","","","~","","","","",""]
+  ];
 
-    let letter_to_index = {
-      'A': 0, 'B': 1, 'C': 2, 'D': 3,
-      'E': 4, 'F': 5, 'G': 6, 'H': 7
+  const rowIndex = { A:0, B:1, C:2, D:3, E:4, F:5, G:6, H:7 };
+
+  const treasure = {
+    x: Math.floor(Math.random() * 13),
+    y: Math.floor(Math.random() * 8)
+  };
+
+  let guesses = 0;
+  let cluesUsed = 0;
+  let gameOver = false;
+
+  console.log("🎮 Welcome to Treasure Hunt!");
+  console.log(map1);
+  console.log(`Use guess("A5") to play. You have ${MAX_GUESSES} guesses. Good luck!`);
+
+  window.guess = function(input) {
+    if (gameOver) return console.log("❌ Game over. Refresh to play again.");
+
+    if (guesses >= MAX_GUESSES) {
+      gameOver = true;
+      return console.log("🛑 No guesses left.");
+    }
+
+    if (!input || input.length < 2) {
+      return console.log("❗ Invalid format. Use guess(\"A5\")");
+    }
+
+    const rowChar = input[0].toUpperCase();
+    const col = parseInt(input.slice(1), 10) - 1;
+
+    if (!(rowChar in rowIndex) || isNaN(col) || col < 0 || col > 12) {
+      return console.log("❗ Invalid coordinate.");
+    }
+
+    const row = rowIndex[rowChar];
+    guesses++;
+
+    const distance =
+      Math.abs(treasure.y - row) + Math.abs(treasure.x - col);
+
+    if (distance === 0) {
+      gameOver = true;
+      console.log("🎉 YOU FOUND THE TREASURE!");
+    } else {
+      console.log(
+        `📍 ${input} is ${distance} cells away. (${MAX_GUESSES - guesses} guesses left)`
+      );
+    }
+  };
+
+  window.clue = function(n) {
+    if (gameOver) return console.log("❌ Game over.");
+
+    if (cluesUsed >= MAX_CLUES) {
+      return console.log("🛑 No clues left.");
+    }
+
+    if (n === undefined) {
+      return console.log(`
+Clues:
+1. Inside river enclosure?
+2. In a pond?
+3. In the mountains?
+4. In a volcano?
+5. In the trees?
+6. In the rocks?
+Usage: clue(1)
+      `);
+    }
+
+    cluesUsed++;
+
+    const cell = map1Matrix[treasure.y][treasure.x];
+
+    const responses = {
+      1: (() => {
+        const enclosed = new Set([
+          "3,3","3,4","3,5","3,6","3,7","3,8","3,9","3,10",
+          "4,3","4,4","4,5","4,6","4,7","4,8","4,10",
+          "5,3","5,4","5,6","5,7","5,9"
+        ]);
+        return enclosed.has(`${treasure.y},${treasure.x}`)
+          ? "🔍 The treasure IS inside the river enclosure."
+          : "🔍 The treasure is NOT inside the river enclosure.";
+      })(),
+      2: cell === "O" ? "💧 The treasure IS in the pond." : "💧 The treasure is NOT in the pond.",
+      3: cell === "A" ? "⛰️ The treasure IS in the mountains." : "⛰️ The treasure is NOT in the mountains.",
+      4: cell === "V" ? "🌋 The treasure IS in the volcano." : "🌋 The treasure is NOT in the volcano.",
+      5: cell === "T" ? "🌳 The treasure IS in the trees." : "🌳 The treasure is NOT in the trees.",
+      6: cell === "@" ? "🗿 The treasure IS in the rocks." : "🗿 The treasure is NOT in the rocks."
     };
 
-    function getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min) + min);
-    }
-
-    let x = getRandomInt(0, 13);
-    let y = getRandomInt(0, 8);
-
-    console.log("🎮 Welcome to TreasureHunt!");
-    console.log("You have to guess where I hid the treasure in 10 or less tries. Good luck!");
-
-    let number_of_guesses = 0;
-
-    while (true) {
-      console.log(map1);
-
-      if (number_of_guesses >= 10) {
-        console.log("\n🛑 Too many guesses. Refresh to try again.");
-        break;
-      }
-
-      console.log("Enter your guess (e.g., A5), enter 0 to clear the console or click cancel to quit");
-      let guess = prompt();
-      if (!guess) break;
-
-      guess = guess.trim().toUpperCase();
-
-      if (guess === "0") {
-        console.clear();
-        continue;
-      }
-
-      let rowChar = guess[0];
-      let colStr = guess.slice(1);
-      if (!(rowChar in letter_to_index) || isNaN(colStr)) {
-        console.log("❗ Invalid input. Format must be like A5.");
-        continue;
-      }
-
-      let row = letter_to_index[rowChar];
-      let col = parseInt(colStr) - 1;
-
-      if (col < 0 || col > 12) {
-        console.log("❗ Column number must be between 1 and 13.");
-        continue;
-      }
-
-      number_of_guesses += 1;
-      let distance = Math.abs(y - row) + Math.abs(x - col);
-
-      if (distance === 0) {
-        console.log("🎉 You found the treasure! Well done!");
-        break;
-      } else {
-        console.log(`⏱ Your guess ${guess} is ${distance} cells away with ${10 - number_of_guesses} guesses left.`);
-        console.log("\nClues:");
-        console.log("1. Is it outside of the space enclosed by the river?");
-        console.log("2. Is it in the pond?");
-        console.log("3. Is it in the mountains?");
-        console.log("4. Is it in the volcano?");
-        console.log("5. Is it in the trees?");
-        console.log("6. Is it in the rocks?");
-        console.log("0. No clue please.\n");
-
-        console.log("Which clue do you want? (0–6)");
-        let clue = prompt();
-        clue = parseInt(clue);
-
-        if (isNaN(clue) || clue < 0 || clue > 6) {
-          console.log("❗ Invalid clue number.");
-          continue;
-        }
-
-        let cell = map1_matrix[y][x];
-        let response = "";
-
-        if (clue === 0) continue;
-
-        if (clue === 1) {
-          let enclosed = new Set([
-            "3,3","3,4","3,5","3,6","3,7","3,8","3,9","3,10",
-            "4,3","4,4","4,5","4,6","4,7","4,8","4,10",
-            "5,3","5,4","5,6","5,7","5,9"
-          ]);
-          response = enclosed.has(`${y},${x}`)
-            ? "🔍 The treasure is INSIDE the space enclosed by the river."
-            : "🔍 The treasure is OUTSIDE the space enclosed by the river.";
-        }
-        if (clue === 2) {
-          response = cell === "O" ? "💧 Yes, it's in the pond." : "💧 No, not in the pond.";
-        }
-        if (clue === 3) {
-          response = cell === "A" ? "⛰️ Yes, it's in the mountains." : "⛰️ No, not in the mountains.";
-        }
-        if (clue === 4) {
-          response = cell === "V" ? "🌋 Yes, it's in the volcano." : "🌋 No, not in the volcano.";
-        }
-        if (clue === 5) {
-          response = cell === "T" ? "🌳 Yes, it's in the trees." : "🌳 No, not in the trees.";
-        }
-        if (clue === 6) {
-          response = cell === "@" ? "🗿 Yes, it's in the rocks." : "🗿 No, not in the rocks.";
-        }
-
-        console.log(response);
-      }
-    }
+    console.log(responses[n] || "❗ Invalid clue number.");
+  };
 }
