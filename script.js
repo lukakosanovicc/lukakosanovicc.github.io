@@ -1,7 +1,7 @@
 console.clear();
 
 const MAX_GUESSES = 10;
-const MAX_CLUES = 10;
+const MAX_CLUES = 5;
 
 const map1 = `
       1  2  3  4  5  6  7  8  9 10 11 12 13
@@ -41,7 +41,7 @@ let gameOver = false;
 
 console.log("🎮 Welcome to Treasure Hunt!");
 console.log(map1);
-console.log(`Use guess("A5") to play. You have ${MAX_GUESSES} guesses. Good luck!`);
+console.log(`Use guess("A5") to play and clue() for clues. You have ${MAX_GUESSES} guesses and ${MAX_CLUES} clues. Good luck!`);
 
 window.guess = function(input) {
   if (gameOver) return console.log("❌ Game over. Refresh to play again.");
